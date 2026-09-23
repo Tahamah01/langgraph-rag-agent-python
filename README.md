@@ -28,7 +28,7 @@ python main.py                   # chat, type 'quit' to exit
 ```
 Settings can be changed with env vars: `LLM_MODEL`, `EMBED_MODEL`, `OLLAMA_URL`, `CHROMA_PATH`.
 
-# Transcript
+## Transcript
 You: Hi, my name is Taha
 Agent loading...
 

@@ -6,3 +6,5 @@ chroma_db/
 chromadb_test/
 pro_rag.py
 rag_test.py
+.Data/
+Data/
