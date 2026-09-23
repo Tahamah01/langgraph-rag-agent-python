@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-LLM_MODEL = os.getenv("OLLAMA_MODEL", "llama3.1:8b")
+LLM_MODEL = os.getenv("LLM_MODEL", "llama3.1:8b")
 EMBED_MODEL = os.getenv("EMBED_MODEL", "nomic-embed-text:latest")
 
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434/api/embeddings")

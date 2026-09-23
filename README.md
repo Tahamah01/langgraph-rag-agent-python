@@ -26,8 +26,27 @@ pip install -r requirements.txt
 python rag.py ./your_docs/       # ingest documents (re-running replaces old chunks)
 python main.py                   # chat, type 'quit' to exit
 ```
-Settings can be changed with env vars: `OLLAMA_MODEL`, `EMBED_MODEL`, `OLLAMA_URL`, `CHROMA_PATH`.
+Settings can be changed with env vars: `LLM_MODEL`, `EMBED_MODEL`, `OLLAMA_URL`, `CHROMA_PATH`.
 
+# Transcript
+You: Hi, my name is Taha
+Agent loading...
+
+Agent: Hi Taha! It's nice to meet you. How can I help you today?
+
+You: 
+Goodbye...
+
+-- a new session --
+You: what's my name?
+Agent loading...
+
+Agent: Your name is Taha.
+
+You: what grade did the report card say i got on my AI class?
+Agent loading...
+
+Agent: According to the report card, your final grade for the Introduction à l'Intelligence Artificielle module (Module 33, ######### ###### Taha) was **18,48**, and you were validated.
 
 ## Known limitations
 - Memories and documents are injected into the system prompt only from the **first message** of a session; later turns rely on the `recall` / `search_knowledge_base` tools.
