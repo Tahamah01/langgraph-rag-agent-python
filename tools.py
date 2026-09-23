@@ -1,5 +1,5 @@
 from langchain_core.tools import tool
-from memory import save_memory, retrieve_memories
+from memory import retrieve_memories, save_memory
 from rag import retrieve_docs
 
 
@@ -10,7 +10,7 @@ def memorize(summary: str) -> str:
 
     Before calling this tool, YOU must first condense the information
     into one concise sentence capturing only the essential fact.
-    Do not pass raw conversation text — pass your own summary.
+    Do not pass raw conversation text - pass your own summary.
 
     When to use:
     - User shares their name, preferences, background, or goals
@@ -19,27 +19,30 @@ def memorize(summary: str) -> str:
     """
     return save_memory(summary)
 
+
 @tool
 def recall(query: str) -> str:
     """
     Search long-term memory for facts relevant to the current query.
+
     Use when the user references something from a past session,
     or when you sense you might have stored relevant context before.
     """
     memories = retrieve_memories(query)
     if not memories:
-        return f'No memories found for {query}'
-    return 'Relevant memories:\n' + '\n'.join(f'- {m}' for m in memories)
+        return f"No memories found for: {query}"
+    return "Relevant memories:\n" + "\n".join(f"- {m}" for m in memories)
 
 
 @tool
 def search_knowledge_base(query: str) -> str:
     """
     Search the document knowledge base for information.
+
     Use this before answering any factual question that might
     be covered by ingested reference documents.
     """
     results = retrieve_docs(query)
     if not results:
-        return 'No relevant documents found!'
-    return f'Relevant excerpts:\n\n' + '\n\n'.join(results)
+        return "No relevant documents found."
+    return "Relevant excerpts:\n\n" + "\n\n".join(results)

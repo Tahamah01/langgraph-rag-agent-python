@@ -1,35 +1,29 @@
-import chromadb
-from chromadb.utils.embedding_functions import OllamaEmbeddingFunction
+import uuid
+from datetime import datetime, timezone
+from config import client, embed_fn
 
-embed_func = OllamaEmbeddingFunction(
-    url = "http://localhost:11434/api/embeddings",
-    model_name = 'nomic-embed-text:latest'
+memory_collection = client.get_or_create_collection(
+    name="agent_memory", embedding_function=embed_fn     # type: ignore
 )
 
 
-client = chromadb.PersistentClient('./chroma_db')
-memory_collection = client.get_or_create_collection(name="agent_memory", embedding_function=embed_func)
-
-
-
 def save_memory(summary: str) -> str:
-    """Embed a memory summary and store it in ChromaDB."""
-    mem_id = f'mem_{memory_collection.count()}'
-    memory = memory_collection.add(documents=[summary], ids=[mem_id])
-    return f'Saved memory {summary}'
-
-
-def retrieve_memories(query: str, n: int = 4) ->list[str]:
-    """Semantic search — find the most relevant past memories for a query."""
-    if memory_collection.count() == 0:
-        return []
-    memory_list = memory_collection.query(
-        query_texts=[query],
-        n_results= min(n, memory_collection.count())
+    """Embed a one-sentence memory and store it in ChromaDB."""
+    summary = summary.strip()
+    if not summary:
+        return "Nothing to save."
+    memory_collection.add(
+        documents=[summary],
+        ids=[f"mem_{uuid.uuid4().hex}"],
+        metadatas=[{"created_at": datetime.now(timezone.utc).isoformat()}],
     )
-    docs = memory_list['documents'][0]
-    metas = memory_list['metadatas'][0]
-
-    return [f"{m.get('source', '?')}] {d}" for d,m in zip(docs, metas)]
+    return f"Saved memory: {summary}"
 
 
+def retrieve_memories(query: str, n: int = 4) -> list[str]:
+    """Semantic search: the most relevant past memories for a query."""
+    count = memory_collection.count()
+    if count == 0:
+        return []
+    result = memory_collection.query(query_texts=[query], n_results=min(n, count))
+    return result["documents"][0]                  # type: ignore
