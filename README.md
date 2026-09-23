@@ -10,7 +10,7 @@ A fully local conversational agent built with **LangGraph**, **Ollama** and **Ch
 
 ## Architecture
 ```
-main.py (CLI loop) -> agent.py (LangGraph ReAct agent + Ollama LLM)
+main.py (CLI loop) -> agent.py (LangChain agent + Ollama LLM)
                          |-- tools.py -> memory.py (agent_memory collection)
                          |            -> rag.py    (documents collection)
                          config.py (models, ChromaDB client)
@@ -19,7 +19,7 @@ At session start, memories and document excerpts relevant to the first message a
 
 ## Setup
 ```bash
-ollama pull llama3.1:8b          # any Ollama model with tool-calling support
+ollama pull gemma4:8b          # any Ollama model with tool-calling support
 ollama pull nomic-embed-text
 pip install -r requirements.txt
 
